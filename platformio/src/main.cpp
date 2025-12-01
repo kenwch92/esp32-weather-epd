@@ -160,7 +160,7 @@ void setup()
       initDisplay();
       do
       {
-        drawError(battery_alert_0deg_196x196, TXT_LOW_BATTERY);
+        drawError(battery_alert_0deg_196x196, TXT_LOW_BATTERY, inTemp, inHumidity);
       } while (display.nextPage());
       powerOffDisplay();
     }
@@ -218,7 +218,7 @@ void setup()
       Serial.println(TXT_NETWORK_NOT_AVAILABLE);
       do
       {
-        drawError(wifi_x_196x196, TXT_NETWORK_NOT_AVAILABLE);
+        drawError(wifi_x_196x196, TXT_NETWORK_NOT_AVAILABLE, inTemp, inHumidity);
       } while (display.nextPage());
     }
     else
@@ -226,7 +226,7 @@ void setup()
       Serial.println(TXT_WIFI_CONNECTION_FAILED);
       do
       {
-        drawError(wifi_x_196x196, TXT_WIFI_CONNECTION_FAILED);
+        drawError(wifi_x_196x196, TXT_WIFI_CONNECTION_FAILED, inTemp, inHumidity);
       } while (display.nextPage());
     }
     powerOffDisplay();
@@ -243,7 +243,7 @@ void setup()
     initDisplay();
     do
     {
-      drawError(wi_time_4_196x196, TXT_TIME_SYNCHRONIZATION_FAILED);
+      drawError(wi_time_4_196x196, TXT_TIME_SYNCHRONIZATION_FAILED, inTemp, inHumidity);
     } while (display.nextPage());
     powerOffDisplay();
     beginDeepSleep(startTime, &timeInfo);
@@ -268,7 +268,7 @@ void setup()
     initDisplay();
     do
     {
-      drawError(wi_cloud_down_196x196, statusStr, tmpStr);
+      drawError(wi_cloud_down_196x196, statusStr, tmpStr, inTemp, inHumidity);
     } while (display.nextPage());
     powerOffDisplay();
     beginDeepSleep(startTime, &timeInfo);
@@ -282,7 +282,7 @@ void setup()
     initDisplay();
     do
     {
-      drawError(wi_cloud_down_196x196, statusStr, tmpStr);
+      drawError(wi_cloud_down_196x196, statusStr, tmpStr, inTemp, inHumidity);
     } while (display.nextPage());
     powerOffDisplay();
     beginDeepSleep(startTime, &timeInfo);
