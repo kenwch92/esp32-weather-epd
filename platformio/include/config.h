@@ -263,6 +263,11 @@
 //   If you wish to disable battery monitoring set this macro to 0.
 #define BATTERY_MONITORING 1
 
+// INDOOR INFORMATION WHEN ERROR
+//   You may choose to display indoor temperature and humidiy from BME280 in error screen.
+//   If you wish to display indoor condition set this macro to 1.
+#define ERROR_INDOOR 0
+
 // NON-VOLATILE STORAGE (NVS) NAMESPACE
 #define NVS_NAMESPACE "weather_epd"
 
