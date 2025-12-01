@@ -1347,7 +1347,7 @@ void drawStatusBar(const String &statusStr, const String &refreshTimeStr,
  * wrapped.
  */
 void drawError(const uint8_t *bitmap_196x196,
-               const String &errMsgLn1, const String &errMsgLn2)
+               const String &errMsgLn1, const String &errMsgLn2,float inTemp, float inHumidity)
 {
   display.setFont(&FONT_26pt8b);
   if (!errMsgLn2.isEmpty())
@@ -1368,6 +1368,61 @@ void drawError(const uint8_t *bitmap_196x196,
   display.drawInvertedBitmap(DISP_WIDTH / 2 - 196 / 2,
                              DISP_HEIGHT / 2 - 196 / 2 - 21,
                              bitmap_196x196, 196, 196, ACCENT_COLOR);
+  
+// draw indoor condition from bme280 if configed  
+// TO DO: find a good location to display
+#if ERROR_INDOOR
+  // indoor icon
+  display.drawInvertedBitmap(0, 0 + (48 + 8) * 0,
+                             house_thermometer_48x48, 48, 48, GxEPD_BLACK);
+  display.drawInvertedBitmap(0, 0 + (48 + 8) * 1,
+                             house_humidity_48x48, 48, 48, GxEPD_BLACK);							 
+
+  // indoor label
+  drawString(0 + 48, 0 + 10 + (48 + 8) * 0, TXT_INDOOR_TEMPERATURE, LEFT);
+  drawString(0 + 48, 0 + 10 + (48 + 8) * 1, TXT_INDOOR_HUMIDITY, LEFT);
+
+  // indoor temperature
+  display.setFont(&FONT_12pt8b);
+  if (!std::isnan(inTemp))
+  {
+#ifdef UNITS_TEMP_KELVIN
+    dataStr = String(std::round(celsius_to_kelvin(inTemp) * 10) / 10.0f, 1);
+#endif
+#ifdef UNITS_TEMP_CELSIUS
+    dataStr = String(std::round(inTemp * 10) / 10.0f, 1);
+#endif
+#ifdef UNITS_TEMP_FAHRENHEIT
+    dataStr = String(static_cast<int>(
+              std::round(celsius_to_fahrenheit(inTemp))));
+#endif
+  }
+  else
+  {
+    dataStr = "--";
+  }
+#if defined(UNITS_TEMP_CELSIUS) || defined(UNITS_TEMP_FAHRENHEIT)
+  dataStr += "\260";
+#endif
+  drawString(0 + 48, 0 + 17 / 2 + (48 + 8) * 0 + 48 / 2, dataStr, LEFT);
+#endif // defined(DISP_BW_V2) || defined(DISP_3C_B) || defined(DISP_7C_F)
+
+ // indoor humidity
+  display.setFont(&FONT_12pt8b);
+  if (!std::isnan(inHumidity))
+  {
+    dataStr = String(static_cast<int>(std::round(inHumidity)));
+  }
+  else
+  {
+    dataStr = "--";
+  }
+  drawString(0 + 48, 0 + 17 / 2 + (48 + 8) * 1 + 48 / 2, dataStr, LEFT);
+  display.setFont(&FONT_8pt8b);
+  drawString(display.getCursorX(), 0 + 17 / 2 + (48 + 8) * 4 + 48 / 2,
+             "%", LEFT);  
+#endif
+  
   return;
 } // end drawError
 
